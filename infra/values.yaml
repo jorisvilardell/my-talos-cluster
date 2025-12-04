@@ -126,7 +126,16 @@ affinity: {}
 argo-cd:
   # --- Configuration Haute Disponibilité (HA) ---
   redis-ha:
-    enabled: true # Utilise Redis en cluster (3 répliques) au lieu d'un Redis simple
+    enabled: true
+    tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+    haproxy:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
 
   controller:
     replicas: 2
@@ -141,7 +150,6 @@ argo-cd:
     replicas: 2
 
   # --- Tolérances pour tourner sur les Control Planes ---
-  # Indispensable car pas de nœuds "workers" dédiés pour l'instant
   global:
     tolerations:
       - key: "node-role.kubernetes.io/control-plane"
