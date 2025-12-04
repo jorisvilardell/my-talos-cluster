@@ -18,10 +18,25 @@ spec:
           hostNetwork: true
           service:
             type: ClusterIP
+          # Tolérance pour le Nginx principal
           tolerations:
             - key: "node-role.kubernetes.io/control-plane"
               operator: "Exists"
               effect: "NoSchedule"
+
+          # --- AJOUT CRUCIAL ICI ---
+          # On doit aussi autoriser les jobs de configuration à tourner sur le CP
+          admissionWebhooks:
+            patch:
+              tolerations:
+                - key: "node-role.kubernetes.io/control-plane"
+                  operator: "Exists"
+                  effect: "NoSchedule"
+            create:
+              tolerations:
+                - key: "node-role.kubernetes.io/control-plane"
+                  operator: "Exists"
+                  effect: "NoSchedule"
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx
