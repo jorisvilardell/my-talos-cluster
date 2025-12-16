@@ -25,5 +25,9 @@ appVersion: "0.0.0"
 
 dependencies:
   - name: argo-cd
-    version: 9.1.6  # Vérifier la dernière version stable sur artifacthub.io
+    version: 9.1.6 # Vérifier la dernière version stable sur artifacthub.io
     repository: https://argoproj.github.io/argo-helm
+
+  - name: traefik
+    version: 37.4.0
+    repository: https://traefik.github.io/charts

@@ -1,6 +1,9 @@
 dependencies:
 - name: argo-cd
   repository: https://argoproj.github.io/argo-helm
-  version: 7.7.16
-digest: sha256:3515953e87aab460a658e9660c0bfc279a82011e229a2707ec4a9c2f1e6a6cb4
-generated: "2025-12-03T20:00:57.607685996+01:00"
+  version: 9.1.6
+- name: traefik
+  repository: https://traefik.github.io/charts
+  version: 26.0.0
+digest: sha256:2e557386c32773b358ca8719fa131eb5e39d2fc16df22d4210373aeac2d70480
+generated: "2025-12-16T09:59:42.201413178+01:00"

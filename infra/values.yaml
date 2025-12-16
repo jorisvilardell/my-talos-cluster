@@ -160,3 +160,51 @@ argo-cd:
   configs:
     params:
       server.insecure: true # Désactive TLS interne d'Argo
+
+# --- Configuration Traefik Production & Sécurisée ---
+traefik:
+  # Pas de DaemonSet "hostNetwork" (trop dangereux/privilégié)
+  deployment:
+    kind: DaemonSet
+    replicas: 2
+
+  # Sécurité maximale (Respecte le standard 'Restricted')
+  securityContext:
+    capabilities:
+      drop: [ALL] # On ne demande RIEN au kernel
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 65532
+    runAsGroup: 65532
+
+  # Configuration Réseau
+  service:
+    enabled: true
+    type: ClusterIP
+
+    # Force Kubernetes à écouter sur la VIP du cluster
+    externalIPs:
+      - 192.168.1.9
+
+  ports:
+    web:
+      port: 8000 # Port interne du conteneur (sécurisé)
+      expose: true # Expose le port 80 sur le Service
+      exposedPort: 80
+    websecure:
+      port: 8443
+      expose: true
+      exposedPort: 443 # https://192.168.1.9
+
+  # Tolérances
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+
+  # Logs (Pour l'observabilité)
+  logs:
+    general:
+      level: INFO
+    access:
+      enabled: true
