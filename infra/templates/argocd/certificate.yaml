@@ -1,0 +1,19 @@
+# infra/templates/argocd/certificate.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd-cert
+  namespace: infra-system
+spec:
+  # 1. Le nom du Secret que Traefik va lire (Doit matcher votre IngressRoute)
+  secretName: argocd-tls
+
+  # 2. Le domaine à sécuriser (Doit matcher votre IngressRoute)
+  dnsNames:
+    - argocd.stc.local
+
+  # 3. Qui signe ? (Notre Issuer créé à l'étape 1)
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io

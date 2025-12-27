@@ -143,7 +143,7 @@ argo-cd:
   server:
     replicas: 2
     ingress:
-      enabled: true
+      enabled: false
 
   repoServer:
     replicas: 2
@@ -191,11 +191,13 @@ traefik:
   ports:
     web:
       port: 8000 # Port interne du conteneur (sécurisé)
-      expose: true # Expose le port 80 sur le Service
+      expose:
+        default: true
       exposedPort: 80
     websecure:
       port: 8443
-      expose: true
+      expose:
+        default: true
       exposedPort: 443 # https://192.168.1.9
 
   # Tolérances
@@ -212,8 +214,25 @@ traefik:
       enabled: true
 
 cert-manager:
-  installCRDs: true # CRITIQUE : Installe les CRDs automatiquement
+  installCRDs: false
 
   # Sécurité pour Talos
   securityContext:
     runAsNonRoot: true
+
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+
+  webhook:
+    tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+
+  cainjector:
+    tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
