@@ -142,6 +142,8 @@ argo-cd:
 
   server:
     replicas: 2
+    ingress:
+      enabled: true
 
   repoServer:
     replicas: 2
@@ -208,3 +210,10 @@ traefik:
       level: INFO
     access:
       enabled: true
+
+cert-manager:
+  installCRDs: true # CRITIQUE : Installe les CRDs automatiquement
+
+  # Sécurité pour Talos
+  securityContext:
+    runAsNonRoot: true

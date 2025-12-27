@@ -31,3 +31,7 @@ dependencies:
   - name: traefik
     version: 37.4.0
     repository: https://traefik.github.io/charts
+
+  - name: cert-manager
+    version: v1.16.2
+    repository: https://charts.jetstack.io

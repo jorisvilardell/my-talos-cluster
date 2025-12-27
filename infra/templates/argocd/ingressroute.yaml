@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-server
+  namespace: infra-system
+spec:
+  entryPoints:
+    - websecure # HTTPS
+  routes:
+    - match: Host(`argocd.stc.local`)
+      kind: Rule
+      services:
+        - name: infra-argocd-server # K8s d'ArgoCD
+          port: 8080
+  tls:
+    secretName: argocd-tls
