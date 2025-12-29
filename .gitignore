@@ -1,0 +1,56 @@
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Git
+.git
+
+# SOPS / Age - Clés de chiffrement (CRITIQUE - SENSIBLE!)
+sops-age.txt
+*.agekey
+.sops.yaml.local
+age.key
+age-key.txt
+
+# Secrets et fichiers sensibles
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+secrets/
+*.secret
+.env
+.env.local
+
+# Helm
+Chart.lock
+charts/
+*.tgz
+
+# Talos
+talosconfig
+*.talosconfig
+controlplane.yaml
+worker.yaml
+talos-secrets.yaml
+
+# Terraform (si utilisé)
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.log
