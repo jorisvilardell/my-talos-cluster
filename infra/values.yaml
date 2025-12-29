@@ -148,6 +148,78 @@ argo-cd:
   repoServer:
     replicas: 2
 
+    volumes:
+      - name: custom-tools
+        emptyDir: {}
+      - name: sops-age
+        secret:
+          secretName: sops-age
+      # 1. On déclare le volume contenant la config du plugin
+      - name: cmp-plugin
+        configMap:
+          name: avp-sops-plugin
+
+    initContainers:
+      - name: download-tools
+        image: registry.access.redhat.com/ubi8/ubi-minimal:8.5
+        command: [sh, -c]
+        # CORRECTION : On commence par 'cd /custom-tools'
+        args:
+          - >-
+            cd /custom-tools &&
+            curl -L https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v1.18.1/argocd-vault-plugin_1.18.1_linux_amd64 -o argocd-vault-plugin &&
+            chmod +x argocd-vault-plugin &&
+            curl -L https://github.com/getsops/sops/releases/download/v3.9.2/sops-v3.9.2.linux.amd64 -o sops &&
+            chmod +x sops
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          seccompProfile:
+            type: RuntimeDefault
+
+    extraContainers:
+      - name: avp-sops
+        command: [/var/run/argocd/argocd-cmp-server]
+        image: registry.access.redhat.com/ubi8/ubi-minimal:8.5
+        env:
+          - name: SOPS_AGE_KEY_FILE
+            value: /home/argocd/.config/sops/age/keys.txt
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+          - name: var-files
+            mountPath: /var/run/argocd
+          - name: plugins
+            mountPath: /home/argocd/cmp-server/plugins
+          - name: sops-age
+            mountPath: /home/argocd/.config/sops/age/keys.txt
+            subPath: keys.txt
+          - name: custom-tools
+            mountPath: /usr/local/bin/argocd-vault-plugin
+            subPath: argocd-vault-plugin
+          # 3. L'astuce pour avoir SOPS dans le PATH
+          - name: custom-tools
+            mountPath: /usr/local/bin/sops
+            subPath: sops
+          # 4. CRUCIAL : On monte le fichier de configuration du plugin
+          - name: cmp-plugin
+            mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: avp.yaml
+
   applicationSet:
     replicas: 2
 
