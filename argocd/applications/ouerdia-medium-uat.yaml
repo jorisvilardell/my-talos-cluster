@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ouerdia-medium-uat
-  namespace: argocd
+  namespace: infra-system
 spec:
   project: default
 
@@ -21,13 +21,13 @@ spec:
 
   syncPolicy:
     automated:
-      prune: true      # Remove resources that are no longer in Git
-      selfHeal: true   # Automatically sync when cluster state drifts
+      prune: true # Remove resources that are no longer in Git
+      selfHeal: true # Automatically sync when cluster state drifts
       allowEmpty: false
 
     syncOptions:
-      - CreateNamespace=true  # Create namespace if it doesn't exist
-      - PruneLast=true        # Prune resources after new ones are healthy
+      - CreateNamespace=true # Create namespace if it doesn't exist
+      - PruneLast=true # Prune resources after new ones are healthy
       - RespectIgnoreDifferences=true
 
     retry:
