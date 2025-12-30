@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ouerdia-medium-uat
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/jorisvilardell/ouerdia-medium.git
+    targetRevision: main
+    path: envs/uat
+
+    # Use AVP-SOPS plugin to decrypt secrets
+    plugin:
+      name: avp-sops
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ouerdia-uat
+
+  syncPolicy:
+    automated:
+      prune: true      # Remove resources that are no longer in Git
+      selfHeal: true   # Automatically sync when cluster state drifts
+      allowEmpty: false
+
+    syncOptions:
+      - CreateNamespace=true  # Create namespace if it doesn't exist
+      - PruneLast=true        # Prune resources after new ones are healthy
+      - RespectIgnoreDifferences=true
+
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  # Ignore differences that are expected
+  ignoreDifferences:
+    # Ignore HPA replica count changes (managed by HPA)
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
+
+    # Ignore mutations made by CloudNativePG operator
+    - group: postgresql.cnpg.io
+      kind: Cluster
+      jsonPointers:
+        - /status
+        - /metadata/finalizers
+
+  # Health assessment
+  revisionHistoryLimit: 10
