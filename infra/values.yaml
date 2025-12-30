@@ -308,3 +308,25 @@ cert-manager:
       - key: "node-role.kubernetes.io/control-plane"
         operator: "Exists"
         effect: "NoSchedule"
+
+# CloudNative-PG Operator
+cloudnative-pg:
+  # Configuration de l'opérateur pour Talos
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+
+  # Ressources de l'opérateur
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  # Monitoring (optionnel)
+  monitoring:
+    podMonitor:
+      enabled: false

@@ -35,3 +35,7 @@ dependencies:
   - name: cert-manager
     version: v1.19.2
     repository: https://charts.jetstack.io
+
+  - name: cloudnative-pg
+    version: 0.27.0
+    repository: https://cloudnative-pg.io/charts

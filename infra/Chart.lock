@@ -8,5 +8,8 @@ dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io
   version: v1.19.2
-digest: sha256:a4c66f7db5f8d551bd944c0cc14ad8f185a15c468d0e52c746d0132fbd8cfa73
-generated: "2025-12-27T14:58:04.561151394+01:00"
+- name: cloudnative-pg
+  repository: https://cloudnative-pg.io/charts
+  version: 0.27.0
+digest: sha256:86a78fb8b443774324c241f8babbc3e3687264c88c4cd32558c1e56978c7b675
+generated: "2025-12-30T21:27:24.806294209+01:00"
