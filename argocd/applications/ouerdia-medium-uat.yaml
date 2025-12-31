@@ -11,10 +11,6 @@ spec:
     targetRevision: main
     path: envs/uat
 
-    # Use AVP-SOPS plugin to decrypt secrets
-    plugin:
-      name: avp-sops
-
   destination:
     server: https://kubernetes.default.svc
     namespace: ouerdia-uat

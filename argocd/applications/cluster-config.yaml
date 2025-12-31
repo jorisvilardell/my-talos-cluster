@@ -11,8 +11,6 @@ spec:
     repoURL: https://github.com/jorisvilardell/my-talos-cluster
     targetRevision: main
     path: cluster-config
-    plugin:
-      name: avp-sops
   destination:
     server: https://kubernetes.default.svc
     namespace: infra-system
