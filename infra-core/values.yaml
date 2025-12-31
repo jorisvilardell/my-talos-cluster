@@ -56,6 +56,9 @@ argo-cd:
         subPath: ksops
       - mountPath: /.config/sops/age
         name: sops-age
+      - mountPath: /.config/kustomize/plugin/viaduct.ai/v1/ksops/ksops
+        name: custom-tools
+        subPath: ksops
 
   applicationSet:
     replicas: 2
