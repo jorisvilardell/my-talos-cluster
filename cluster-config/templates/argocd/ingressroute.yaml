@@ -10,7 +10,7 @@ spec:
     - match: Host(`argocd.stc.local`)
       kind: Rule
       services:
-        - name: infra-argocd-server # K8s d'ArgoCD
+        - name: infra-core-argocd-server # K8s d'ArgoCD
           port: 80
   tls:
     secretName: argocd-tls
