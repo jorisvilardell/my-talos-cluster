@@ -9,4 +9,3 @@ resources:
   - pki/issuer.yaml
 generators:
   - secret-generator.yaml
-namespace: infra-system
