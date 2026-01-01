@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: longhorn-system
+  labels:
+    # On ouvre les droits explicitement AVANT que Longhorn n'arrive
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/warn: privileged
+    # Label utile pour que ArgoCD sache que c'est géré par cluster-config
+    argocd.argoproj.io/instance: cluster-config
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-options: Delete=false
