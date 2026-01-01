@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ouerdia-medium-uat
-  namespace: infra-system
+  namespace: argocd
 spec:
   project: default
 
