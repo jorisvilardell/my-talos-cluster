@@ -5,6 +5,7 @@ resources:
   - argocd/ingressroute.yaml
   - longhorn/certificate.yaml
   - longhorn/ingressroute.yaml
+  - longhorn/namespace.yaml
   - pki/issuer.yaml
 generators:
   - secret-generator.yaml
