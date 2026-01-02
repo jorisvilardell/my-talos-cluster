@@ -20,11 +20,15 @@ spec:
           jobEnabled: false
 
         defaultSettings:
-          defaultDataPath: /var/mnt/longhorn
+          defaultDataPath: /var/lib/longhorn
           createDefaultDiskLabeledNodes: true
+          storageMinimalAvailablePercentage: 20
+          storageOverProvisioningPercentage: 200
           autoSalvage: true
+          disableSchedulingOnCordonedNode: true
+          dataLocality: best-effort
+          taintToleration: "node-role.kubernetes.io/control-plane:NoSchedule;node-role.kubernetes.io/master:NoSchedule"
 
-        # Global tolerations for all Longhorn components (daemonsets, jobs, etc.)
         global:
           tolerations:
             - key: "node-role.kubernetes.io/control-plane"
@@ -35,6 +39,13 @@ spec:
               effect: "NoSchedule"
 
         longhornManager:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
           priorityClass: "system-node-critical"
 
         ingress:
@@ -51,6 +62,7 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=true
   ignoreDifferences:
+    # Longhorn CRDs
     - group: apiextensions.k8s.io
       kind: CustomResourceDefinition
       name: engineimages.longhorn.io
