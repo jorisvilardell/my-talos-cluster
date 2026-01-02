@@ -178,31 +178,3 @@ cloudnative-pg:
   monitoring:
     podMonitor:
       enabled: false
-
-longhorn:
-  csi:
-    kubeletRootDir: /var/lib/kubelet
-
-  defaultSettings:
-    defaultDataPath: /var/lib/longhorn
-    createDefaultDiskLabeledNodes: true
-    taintToleration: "node-role.kubernetes.io/control-plane:NoSchedule"
-
-  persistence:
-    defaultClassReplicaCount: 3
-    defaultClass: true
-
-  longhornManager:
-    tolerations: &cp_toleration
-      - key: "node-role.kubernetes.io/control-plane"
-        operator: "Exists"
-        effect: "NoSchedule"
-
-  longhornDriver:
-    tolerations: *cp_toleration
-
-  longhornUI:
-    tolerations: *cp_toleration
-
-  ingress:
-    enabled: false
