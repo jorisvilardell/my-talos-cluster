@@ -14,7 +14,7 @@ spec:
     helm:
       values: |
         persistence:
-          defaultClassReplicaCount: 2
+          defaultClassReplicaCount: 3
 
         preUpgradeChecker:
           jobEnabled: false
