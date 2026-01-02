@@ -20,17 +20,12 @@ spec:
           jobEnabled: false
 
         defaultSettings:
-          defaultDataPath: /var/lib/longhorn
+          defaultDataPath: /var/mnt/longhorn
           createDefaultDiskLabeledNodes: true
+          autoSalvage: true
 
-        longhornManager:
-          resources:
-            requests:
-              cpu: 100m
-              memory: 500Mi
-            limits:
-              cpu: 500m
-              memory: 1Gi
+        # Global tolerations for all Longhorn components (daemonsets, jobs, etc.)
+        global:
           tolerations:
             - key: "node-role.kubernetes.io/control-plane"
               operator: "Exists"
@@ -39,17 +34,8 @@ spec:
               operator: "Exists"
               effect: "NoSchedule"
 
-        longhornUI:
-          tolerations:
-            - key: "node-role.kubernetes.io/control-plane"
-              operator: "Exists"
-              effect: "NoSchedule"
-
-        longhornDriver:
-          tolerations:
-            - key: "node-role.kubernetes.io/control-plane"
-              operator: "Exists"
-              effect: "NoSchedule"
+        longhornManager:
+          priorityClass: "system-node-critical"
 
         ingress:
           enabled: false
