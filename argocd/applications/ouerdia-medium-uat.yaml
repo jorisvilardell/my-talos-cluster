@@ -3,6 +3,13 @@ kind: Application
 metadata:
   name: ouerdia-medium-uat
   namespace: infra-system
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: api=ghcr.io/jorisvilardell/ouerdia-medium-api, webapp=ghcr.io/jorisvilardell/ouerdia-medium-webapp
+    argocd-image-updater.argoproj.io/api.update-strategy: digest
+    argocd-image-updater.argoproj.io/api.allow-tags: regexp:^dev$
+    argocd-image-updater.argoproj.io/webapp.update-strategy: digest
+    argocd-image-updater.argoproj.io/webapp.allow-tags: regexp:^dev$
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
 
