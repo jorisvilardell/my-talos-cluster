@@ -54,3 +54,5 @@ temp/
 *.tmp
 *.bak
 *.log
+*.sops.yaml.dec
+*.sops.yaml.decrypted
