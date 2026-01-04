@@ -77,6 +77,15 @@ argo-cd:
     params:
       server.insecure: true # Désactive TLS interne d'Argo
 
+argocd-image-updater:
+  enabled: true
+  config:
+    registries:
+      - name: GitHub Container Registry
+        prefix: ghcr.io
+        api_url: https://ghcr.io
+        credentials: secret:infra-system/global-github-creds#updater-creds
+
 # --- Configuration Traefik Production & Sécurisée ---
 traefik:
   # Pas de DaemonSet "hostNetwork" (trop dangereux/privilégié)
