@@ -3,21 +3,8 @@ kind: Application
 metadata:
   name: ouerdia-medium-uat
   namespace: infra-system
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: api=ghcr.io/jorisvilardell/ouerdia-medium-api, webapp=ghcr.io/jorisvilardell/ouerdia-medium-webapp
-    argocd-image-updater.argoproj.io/api.update-strategy: digest
-    argocd-image-updater.argoproj.io/api.allow-tags: regexp:^dev$
-    argocd-image-updater.argoproj.io/api.helm.image-name: api.image
-    argocd-image-updater.argoproj.io/api.helm.image-tag: api.image.tag
-    argocd-image-updater.argoproj.io/webapp.update-strategy: digest
-    argocd-image-updater.argoproj.io/webapp.allow-tags: regexp:^dev$
-    argocd-image-updater.argoproj.io/webapp.helm.image-name: webapp.image
-    argocd-image-updater.argoproj.io/webapp.helm.image-tag: webapp.image.tag
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/git-branch: main
-    argocd-image-updater.argoproj.io/write-back-target: "kustomization:envs/uat"
 spec:
-  project: default
+  project: nadyamedium
 
   source:
     repoURL: https://github.com/jorisvilardell/ouerdia-medium.git

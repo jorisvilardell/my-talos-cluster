@@ -1,0 +1,65 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: ouerdia-medium-uat
+  namespace: infra-system
+spec:
+  # Namespace où se trouvent les Applications ArgoCD à gérer
+  namespace: infra-system
+
+  # Sélection de l'application ArgoCD à gérer
+  applicationRefs:
+    - namePattern: "ouerdia-medium-uat"
+
+      # Configuration des images à surveiller et mettre à jour
+      images:
+        # Image de l'API Backend
+        - alias: api
+          imageName: ghcr.io/jorisvilardell/ouerdia-medium-api:dev
+
+          # Paramètres de mise à jour pour l'API
+          commonUpdateSettings:
+            updateStrategy: digest
+            allowTags:
+              - regexp: ^dev$
+            pullSecrets:
+              - name: github-registry-secret
+                namespace: ouerdia-uat
+
+          # Cible dans le manifest Helm
+          manifestTargets:
+            helm:
+              name: api.image.repository
+              tag: api.image.tag
+
+        # Image du Frontend Webapp
+        - alias: webapp
+          imageName: ghcr.io/jorisvilardell/ouerdia-medium-webapp:dev
+
+          # Paramètres de mise à jour pour le Webapp
+          commonUpdateSettings:
+            updateStrategy: digest
+            allowTags:
+              - regexp: ^dev$
+            pullSecrets:
+              - name: github-registry-secret
+                namespace: ouerdia-uat
+
+          # Cible dans le manifest Helm
+          manifestTargets:
+            helm:
+              name: webapp.image.repository
+              tag: webapp.image.tag
+
+      # Configuration Git write-back pour cette application
+      writeBackConfig:
+        method: git
+        gitConfig:
+          branch: main
+          path: envs/uat
+
+  # Configuration globale de write-back (fallback)
+  writeBackConfig:
+    method: git
+    gitConfig:
+      branch: main
