@@ -20,11 +20,8 @@ spec:
           # Paramètres de mise à jour pour l'API
           commonUpdateSettings:
             updateStrategy: digest
-            allowTags:
-              - regexp: ^dev$
-            pullSecrets:
-              - name: github-registry-secret
-                namespace: ouerdia-uat
+            allowTags: "^dev$"
+            pullSecret: github-registry-secret
 
           # Cible dans le manifest Helm
           manifestTargets:
@@ -39,11 +36,8 @@ spec:
           # Paramètres de mise à jour pour le Webapp
           commonUpdateSettings:
             updateStrategy: digest
-            allowTags:
-              - regexp: ^dev$
-            pullSecrets:
-              - name: github-registry-secret
-                namespace: ouerdia-uat
+            allowTags: "^dev$"
+            pullSecret: github-registry-secret
 
           # Cible dans le manifest Helm
           manifestTargets:
@@ -51,15 +45,12 @@ spec:
               name: webapp.image.repository
               tag: webapp.image.tag
 
-      # Configuration Git write-back pour cette application
+      # Configuration write-back pour cette application
+      # Mode argocd : met à jour directement les paramètres de l'Application ArgoCD
+      # sans créer de commit Git (évite les conflits avec main)
       writeBackConfig:
-        method: git
-        gitConfig:
-          branch: main
-          path: envs/uat
+        method: argocd
 
   # Configuration globale de write-back (fallback)
   writeBackConfig:
-    method: git
-    gitConfig:
-      branch: main
+    method: argocd
