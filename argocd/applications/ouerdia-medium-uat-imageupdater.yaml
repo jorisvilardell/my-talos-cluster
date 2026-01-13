@@ -20,7 +20,6 @@ spec:
           # Paramètres de mise à jour pour l'API
           commonUpdateSettings:
             updateStrategy: digest
-            allowTags: "dev"
 
         # Image du Frontend Webapp
         - alias: webapp
@@ -29,7 +28,6 @@ spec:
           # Paramètres de mise à jour pour le Webapp
           commonUpdateSettings:
             updateStrategy: digest
-            allowTags: "dev"
 
       # Configuration write-back pour cette application
       # Mode argocd : met à jour directement les paramètres de l'Application ArgoCD
