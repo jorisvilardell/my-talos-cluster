@@ -20,14 +20,7 @@ spec:
           # Paramètres de mise à jour pour l'API
           commonUpdateSettings:
             updateStrategy: digest
-            allowTags: "^dev$"
-            pullSecret: github-registry-secret
-
-          # Cible dans le manifest Helm
-          manifestTargets:
-            helm:
-              name: api.image.repository
-              tag: api.image.tag
+            allowTags: "dev"
 
         # Image du Frontend Webapp
         - alias: webapp
@@ -36,18 +29,11 @@ spec:
           # Paramètres de mise à jour pour le Webapp
           commonUpdateSettings:
             updateStrategy: digest
-            allowTags: "^dev$"
-            pullSecret: github-registry-secret
-
-          # Cible dans le manifest Helm
-          manifestTargets:
-            helm:
-              name: webapp.image.repository
-              tag: webapp.image.tag
+            allowTags: "dev"
 
       # Configuration write-back pour cette application
       # Mode argocd : met à jour directement les paramètres de l'Application ArgoCD
-      # sans créer de commit Git (évite les conflits avec main)
+      # via kustomize.images, sans gérer les Helm values
       writeBackConfig:
         method: argocd
 
