@@ -4,7 +4,7 @@ metadata:
   name: ouerdia-medium-uat
   namespace: infra-system
 spec:
-  project: nadyamedium
+  project: default
 
   source:
     repoURL: https://github.com/jorisvilardell/ouerdia-medium.git
